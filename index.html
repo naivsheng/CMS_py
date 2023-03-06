@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CMS Demo</title>
+	<style>
+		* {
+			box-sizing: border-box;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		header {
+			background-color: #333;
+			color: #fff;
+			padding: 10px;
+		}
+
+		nav {
+			background-color: #f1f1f1;
+			overflow: hidden;
+		}
+
+		nav a {
+			float: left;
+			display: block;
+			color: #333;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+			font-size: 17px;
+		}
+
+		nav a:hover {
+			background-color: #ddd;
+			color: #333;
+		}
+
+		.container {
+			padding: 20px;
+		}
+
+		input[type=text], input[type=password] {
+			width: 100%;
+			padding: 12px 20px;
+			margin: 8px 0;
+			display: inline-block;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+
+		button {
+			background-color: #4CAF50;
+			color: white;
+			padding: 14px 20px;
+			margin: 8px 0;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #45a049;
+		}
+
+		.reminder-list {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+			border: 1px solid #ddd;
+			background-color: #f9f9f9;
+		}
+
+		.reminder-list li {
+			border-bottom: 1px solid #ddd;
+			padding: 10px;
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.communication-list {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+			border: 1px solid #ddd;
+			background-color: #f9f9f9;
+		}
+
+		.communication-list li {
+			border-bottom: 1px solid #ddd;
+			padding: 10px;
+			display: flex;
+			justify-content: space-between;
+		}
+	</style>
+</head>
+<body>
+
+<header>
+	<h1>CMS Demo</h1>
+</header>
+
+<nav>
+	<a href="#">Home</a>
+	<a href="#">Reminders</a>
+	<a href="#">Communication</a>
+	<a href="#">Logout</a>
+</nav>
+
+<div class="container">
+	<h2>Login</h2>
+	<form>
+		<label for="username">Username</label>
+		<input type="text" id="username" name="username">
+
+		<label for="password">Password</label>
+		<input type="password" id="password" name="password">
+
+		<button type="submit">Login</button>
+	</form>
+</div>
+
+
+<div class="container">
+	<h2>Register</h2>
+	<form>
+		<label for="username">Username</label>
+		<input type="text" id="username" name="username">
+
+		<label for="password">Password</label>
+		<input type="password" id="password" name="password">
+
+		<label for="confirm_password">Confirm Password</label>
+		<input type="password" id="confirm_password" name="confirm_password">
+
+		<button type="submit">Register</button>
+	</form>
+</div>
+
+<div class="container">
+	<h2>Reminders</h2>
+	<ul class="reminder-list">
+		<li>
+			<span>Meeting at 2pm</span>
+			<span>2023-02-16 14:00</span>
+		</li>
+		<li>
+			<span>Finish project deadline</span>
+			<span>2023-02-18 23:59</span>
+		</li>
+		<li>
+			<span>Submit report</span>
+			<span>2023-02-20 10:00</span>
+		</li>
+	</ul>
+</div>
+
+<div class="container">
+	<h2>Communication</h2>
+	<ul class="communication-list">
+		<li>
+			<span>Alice: Hi, can you send me the report?</span>
+			<span>2023-02-15 09:23</span>
+		</li>
+		<li>
+			<span>Bob: Sure, I will send it to you in a minute.</span>
+			<span>2023-02-15 09:25</span>
+		</li>
+		<li>
+			<span>Alice: Thanks.</span>
+			<span>2023-02-15 09:26</span>
+		</li>
+	</ul>
+</div>
+
+</body>
+</html>
