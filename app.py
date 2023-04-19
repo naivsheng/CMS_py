@@ -1,10 +1,17 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, render_template_string
+from flask import Response, make_response # cookies操作
+from flask import flash, get_flashed_messages # 闪存系统：向用户提供反馈信息，服务器向客户端返回反馈信息后闪存中的反馈信息将被服务器端删除
 import datetime
+import time
 import mysql.connector
 from flask_socketio import SocketIO, emit, join_room
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+app.secret_key = 'your_secret_key' # 用于给session加密
+
+# 设置session有效时间为30min
+session.permanent = True
+app.permanent_session_lifetime = datetime.timedelta(minutes=30)
 
 # 连接 MySQL 数据库
 db = mysql.connector.connect(
@@ -39,23 +46,66 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        # 利用jinji2
+        # page = '''
+        # <form action="{{ url_for('do_login') }}" method="post">
+        #     <p>name: <input type="text" name="user_name" /></p>
+        #     <input type="submit" value="Submit" />
+        # </form>
+        # ''' 
+        # return render_template_string(page)
         username = request.form['username']
         password = request.form['password']
         cursor = db.cursor()
         cursor.execute("SELECT * FROM users WHERE username=%s AND password=%s", (username, password))
         user = cursor.fetchone()
         if user:
-            session['user_id'] = user[0]
+            session['user_id'] = user[0] # 储存user到session
             return redirect(url_for('home'))
         else:
             return render_template('login.html', error='Invalid username or password')
     else:
         return render_template('login.html')
 
+@app.route('/add') # 添加cookies
+def add():
+    # 可以借助flask.Response来实现cookie
+    res = Response('add cookies')
+    res.set_cookie(key='name',value='admin',expires=time.time()+6*60) # 设置cookie及其有效期
+    return res
+
+@app.route('/del') # 删除cookies->即设置expires=0
+def del_cookie():
+    res = Response('delete cookies')
+    res.set_cookie('name', '', expires=0) 
+    return res
+# 闪存系统
+'''在jinja2中的调用
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul>
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endwith %}
+'''
+@app.route('/gen') # 设置闪存
+def gen():
+    info = 'access at ' + time.time().__str__()
+    flash(info)
+    # flash('show1'+info, category='show1') # 给闪存设置分类，
+    return info
+@app.route('/show1') # 读取闪存
+def show1():
+    return get_flashed_messages().__str__()
+    # return get_flashed_messages(category_filter='show1').__str__() # 此时只返回category为show1的内容
+
 # 退出登录
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)
+    session.pop('user_id', None) # 调用pop方法时会返回pop的键对应的值；若要pop的键不存在，则返回第二个参数
     return redirect(url_for('login'))
 
 # 用户首页
